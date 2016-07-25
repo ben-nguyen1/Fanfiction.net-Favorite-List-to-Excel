@@ -1,0 +1,8 @@
+{
+  "name": "my-fav-fan-fics",
+  "version": "0.0.1",
+  "description": "single page web app to download excel sheet of a user's list of favorite stories",
+  "main": "index.js",
+  "author": "bpn252",
+  "license": "ISC"
+}
