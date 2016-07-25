@@ -4,5 +4,10 @@
   "description": "single page web app to download excel sheet of a user's list of favorite stories",
   "main": "index.js",
   "author": "bpn252",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^0.20.0",
+    "express": "^4.14.0",
+    "request": "^2.74.0"
+  }
 }
