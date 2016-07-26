@@ -55,14 +55,30 @@ request('https://www.fanfiction.net/u/2317158', function (error, response, html)
             stories[i].datePublished = $(element).find('div > span').last().text();
             stories[i].dateUpdated = $(element).find('div > span').first().text();
 
-            /*var meta = $(element).find('div > div ').text();
-            var datePublished = 'Published: ' + stories[i].datepublished + " - ";
+            // get characters
+            var meta = $(element).find('div > div ').text();
+            var datePublished = "Published: " + stories[i].datePublished + " - ";
             var index = meta.indexOf(datePublished);
-            console.log(meta.substring(index + datePublished.numStories, meta.numStories));*/
+            if (stories[i].statusId == 1){
+                stories[i].characters = meta.substring(index + datePublished.length, meta.length);
+            }
+            else{
+                stories[i].characters = meta.substring(index + datePublished.length, meta.length - (" - Complete").length);
+            }
+
+            // get numFavs and numFollows
+            if (stories[i].dateUpdated == stories[i].datePublished)
+                dateUpdated = "Published: ";
+            else
+                var dateUpdated = "Updated: ";
+            var reviews = "Reviews: " + stories[i].numReviews;
+            var favsAndFollows = meta.substring(meta.indexOf(reviews) + reviews.length + 3, meta.indexOf(dateUpdated)-3).split(" - ");
+            stories[i].numFavorites = favsAndFollows[0].substring(favsAndFollows[0].indexOf("Favs: ") + "Favs: ".length);
+            stories[i].numFollows = favsAndFollows[1].substring(favsAndFollows[1].indexOf("Follows: ") + "Follows: ".length);
             k++;
         });
 
-        // print to the console a JSON formated array
+        // print to the console a JSON formmated array
         // use https://jsonformatter.curiousconcept.com/ to see better results
         console.log(JSON.stringify(stories));
     }
