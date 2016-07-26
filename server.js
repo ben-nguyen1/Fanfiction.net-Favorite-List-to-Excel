@@ -3,7 +3,7 @@ var request = require('request');
 var cheerio = require('cheerio');
 
 // request to get html
-request('https://www.fanfiction.net/u/2317158', function (error, response, html) {
+request('https://www.fanfiction.net/u/1584662', function (error, response, html) {
     if (!error && response.statusCode == 200) {
 
         // $ will now refer to the html DOM
@@ -79,7 +79,11 @@ request('https://www.fanfiction.net/u/2317158', function (error, response, html)
             var reviews = "Reviews: " + stories[i].numReviews;
             var favsAndFollows = meta.substring(meta.indexOf(reviews) + reviews.length + 3, meta.indexOf(dateUpdated)-3).split(" - ");
             stories[i].numFavorites = favsAndFollows[0].substring(favsAndFollows[0].indexOf("Favs: ") + "Favs: ".length);
-            stories[i].numFollows = favsAndFollows[1].substring(favsAndFollows[1].indexOf("Follows: ") + "Follows: ".length);
+
+            if (favsAndFollows.length == 2)
+                stories[i].numFollows = favsAndFollows[1].substring(favsAndFollows[1].indexOf("Follows: ") + "Follows: ".length);
+            else
+                stories[i].numFollows = 0;
 
             // get rating (K, K+, T, M) and language
             var metaArray = meta.split(" - ");
