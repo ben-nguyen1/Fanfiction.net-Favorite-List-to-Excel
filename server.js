@@ -68,11 +68,13 @@ request('https://www.fanfiction.net/u/2317158', function (error, response, html)
                 stories[i].characters = meta.substring(index + datePublished.length, meta.length - (" - Complete").length);
             }
 
+            var dateUpdated;
+
             // get numFavs and numFollows
             if (stories[i].dateUpdated == stories[i].datePublished)
                 dateUpdated = "Published: ";
             else
-                var dateUpdated = "Updated: ";
+                dateUpdated = "Updated: ";
 
             var reviews = "Reviews: " + stories[i].numReviews;
             var favsAndFollows = meta.substring(meta.indexOf(reviews) + reviews.length + 3, meta.indexOf(dateUpdated)-3).split(" - ");
