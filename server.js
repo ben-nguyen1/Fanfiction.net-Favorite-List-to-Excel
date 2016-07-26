@@ -57,6 +57,8 @@ request('https://www.fanfiction.net/u/2317158', function (error, response, html)
 
             // get characters
             var meta = $(element).find('div > div ').text();
+            meta = meta.substring(meta.indexOf(stories[i].category) + stories[i].category.length + 3);
+
             var datePublished = "Published: " + stories[i].datePublished + " - ";
             var index = meta.indexOf(datePublished);
             if (stories[i].statusId == 1){
@@ -71,14 +73,28 @@ request('https://www.fanfiction.net/u/2317158', function (error, response, html)
                 dateUpdated = "Published: ";
             else
                 var dateUpdated = "Updated: ";
+
             var reviews = "Reviews: " + stories[i].numReviews;
             var favsAndFollows = meta.substring(meta.indexOf(reviews) + reviews.length + 3, meta.indexOf(dateUpdated)-3).split(" - ");
             stories[i].numFavorites = favsAndFollows[0].substring(favsAndFollows[0].indexOf("Favs: ") + "Favs: ".length);
             stories[i].numFollows = favsAndFollows[1].substring(favsAndFollows[1].indexOf("Follows: ") + "Follows: ".length);
+
+            // get rating (K, K+, T, M) and language
+            var metaArray = meta.split(" - ");
+
+            stories[i].rating = metaArray[0].substring("Rated: ".length);
+            stories[i].language = metaArray[1];
+
+            if (metaArray[2].includes("Chapters: ")){
+                stories[i].genres = "";
+            }
+            else
+                stories[i].genres = metaArray[2];
+
             k++;
         });
 
-        // print to the console a JSON formmated array
+        // print to the console a JSON object of the stories
         // use https://jsonformatter.curiousconcept.com/ to see better results
         console.log(JSON.stringify(stories));
     }
